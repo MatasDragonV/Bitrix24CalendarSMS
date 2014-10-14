@@ -18,6 +18,8 @@
 		
 		$TimeMinus = strtotime($arFields["ID"]) - time();
 		if (($AlreadySended == 0)&&($TimeMinus > 0)&&($TimeMinus < ($TimeBefore * 60))) {
+			$SmsSendUsers[] = array();
+			/*Если надо отправлять СМС сотрудникам тоже - раскомментировать
 			$SmsSendUsers[] = $arFields["MEETING_HOST"];
 			foreach($arFields["ATTENDEES_CODES"] AS $userCode) {
 				$SmsSendUsers[] = str_replace("U","",$userCode);
@@ -32,7 +34,20 @@
 					CSMS::Send($message, $arUser["PERSONAL_MOBILE"], "UTF-8");  
 				} 
 			}
-			
+			*/
+			$SmsSendLeads[] = array();
+			foreach($arFields["UF_CRM_CAL_EVENT"] as $CrmEvent) {
+				if(strripos($CrmEvent,"L_")) {
+					$LeadID = ("L_","",$CrmEvent);
+					//Тут вставить функцию вытаскивания номера из лида, номер записать в $mobileNum
+					if (CModule::IncludeModule("sozdavatel.sms"))  
+				{  
+					$message = "В течение ближайших ".$TimeBefore." минут у Вас состоится встреча:\n".$arFields["NAME"];  
+					CSMS::Send($message, $mobileNum, "UTF-8");  
+				} 
+					
+				} 
+			}
 			$arLoadProductArray = Array(
 				"MODIFIED_BY"    => $USER->GetID(),
 				"IBLOCK_SECTION_ID" => false, 
