@@ -35,7 +35,7 @@
 				} 
 			}
 			*/
-			$SmsSendLeads[] = array();
+			//$SmsSendLeads[] = array(); Это в приницпе лишнее
 			foreach($arFields["UF_CRM_CAL_EVENT"] as $CrmEvent) {
 				if(strripos($CrmEvent,"L_")) {
 					$LeadID = ("L_","",$CrmEvent);
