@@ -40,7 +40,13 @@
 				if(strripos($CrmEvent,"L_")) {
 					$LeadID = ("L_","",$CrmEvent);
 					//Тут вставить функцию вытаскивания номера из лида, номер записать в $mobileNum
-					if (CModule::IncludeModule("sozdavatel.sms"))  
+					$res = CCrmFieldMulti::GetList(array(),array("ELEMENT_ID"=>$LeadID,"TYPE_ID"=>"PHONE","VALUE_TYPE"=>"MOBILE"));
+					$mobileNum = "";
+					if($ob = $res->Fetch())
+					{
+						$mobileNum = $ob["VALUE"];
+					}
+					if (CModule::IncludeModule("sozdavatel.sms")&&(!empty($mobileNum)))  
 				{  
 					$message = "В течение ближайших ".$TimeBefore." минут у Вас состоится встреча:\n".$arFields["NAME"];  
 					CSMS::Send($message, $mobileNum, "UTF-8");  
